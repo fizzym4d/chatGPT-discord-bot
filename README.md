@@ -1,3 +1,6 @@
+
+p.s. I'm an idiot and dunno shit about python. this probably doesn't work
+
 # ChatGPT Discord Bot
 
 > ### Build your own Discord bot using ChatGPT
