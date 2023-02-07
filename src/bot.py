@@ -7,8 +7,8 @@ logger = log.setup_logger(__name__)
 
 config = responses.get_config()
 
-isPrivate = False
-isReplyAll = False
+isPrivate2 = False
+isReplyAll2 = False
 
 class aclient(discord.Client):
     def __init__(self) -> None:
@@ -16,14 +16,14 @@ class aclient(discord.Client):
         intents.message_content = True
         super().__init__(intents=intents)
         self.tree = app_commands.CommandTree(self)
-        self.activity = discord.Activity(type=discord.ActivityType.watching, name="/chat | /help")
+        self.activity = discord.Activity(type=discord.ActivityType.watching, name="/chat2 | /help2")
 
 
 async def send_message(message, user_message):
-    global isReplyAll
-    if not isReplyAll:
+    global isReplyAll2
+    if not isReplyAll2:
         author = message.user.id
-        await message.response.defer(ephemeral=isPrivate)
+        await message.response.defer(ephemeral=isPrivate2)
     else:
         author = message.author.id
     try:
@@ -36,7 +36,7 @@ async def send_message(message, user_message):
                 # Split the response if the code block exists
                 parts = response.split("```")
                 # Send the first message
-                if isReplyAll:
+                if isReplyAll2:
                     await message.channel.send(parts[0])
                 else:
                     await message.followup.send(parts[0])
@@ -55,19 +55,19 @@ async def send_message(message, user_message):
                     code_block_chunks = [formatted_code_block[i:i+1900]
                                          for i in range(0, len(formatted_code_block), 1900)]
                     for chunk in code_block_chunks:
-                        if isReplyAll:
+                        if isReplyAll2:
                             await message.channel.send("```" + chunk + "```")
                         else:
                             await message.followup.send("```" + chunk + "```")
                 else:
-                    if isReplyAll:
+                    if isReplyAll2:
                         await message.channel.send("```" + formatted_code_block + "```")
                     else:
                         await message.followup.send("```" + formatted_code_block + "```")
                 # Send the remaining of the response in another message
 
                 if len(parts) >= 3:
-                    if isReplyAll:
+                    if isReplyAll2:
                         await message.channel.send(parts[2])
                     else:
                         await message.followup.send(parts[2])
@@ -75,18 +75,18 @@ async def send_message(message, user_message):
                 response_chunks = [response[i:i+1900]
                                    for i in range(0, len(response), 1900)]
                 for chunk in response_chunks:
-                    if isReplyAll:
+                    if isReplyAll2:
                         await message.channel.send(chunk)
                     else:
                         await message.followup.send(chunk)
                         
         else:
-            if isReplyAll:
+            if isReplyAll2:
                 await message.channel.send(response)
             else:
                 await message.followup.send(response)
     except Exception as e:
-        if isReplyAll:
+        if isReplyAll2:
             await message.channel.send("> **Error: Something went wrong, please try again later!**")
         else:
             await message.followup.send("> **Error: Something went wrong, please try again later!**")
@@ -129,9 +129,9 @@ def run_discord_bot():
 
     @client.tree.command(name="chat2", description="Have a chat with ChatGPT 2")
 
-    async def chat(interaction: discord.Interaction, *, message: str):
-        global isReplyAll
-        if isReplyAll:
+    async def chat2(interaction: discord.Interaction, *, message: str):
+        global isReplyAll2
+        if isReplyAll2:
             await interaction.response.defer(ephemeral=False)
             await interaction.followup.send("> **Warn: You already on replyAll mode. If you want to use slash command, switch to normal mode, use `/replyall` again**")
             logger.warning("\x1b[31mYou already on replyAll mode, can't use slash command!\x1b[0m")
@@ -145,61 +145,61 @@ def run_discord_bot():
             f"\x1b[31m{username}\x1b[0m : '{user_message}' ({channel})")
         await send_message(interaction, user_message)
 
-    @client.tree.command(name="private2", description="Toggle private access with ChatGPT 2")
-    async def private(interaction: discord.Interaction):
-        global isPrivate
+    @client.tree.command(name="private2", description="Toggle private2 access with ChatGPT 2")
+    async def private2(interaction: discord.Interaction):
+        global isPrivate2
         await interaction.response.defer(ephemeral=False)
-        if not isPrivate:
-            isPrivate = not isPrivate
-            logger.warning("\x1b[31mSwitch to private mode\x1b[0m")
-            await interaction.followup.send("> **Info: Next, the response will be sent via private message. If you want to switch back to public mode, use `/public`**")
+        if not isPrivate2:
+            isPrivate2 = not isPrivate2
+            logger.warning("\x1b[31mSwitch to private2 mode\x1b[0m")
+            await interaction.followup.send("> **Info: Next, the response will be sent via private2 message. If you want to switch back to public2 mode, use `/public2`**")
         else:
-            logger.info("You already on private mode!")
-            await interaction.followup.send("> **Warn: You already on private mode. If you want to switch to public mode, use `/public`**")
+            logger.info("You already on private2 mode!")
+            await interaction.followup.send("> **Warn: You already on private2 mode. If you want to switch to public2 mode, use `/public2`**")
 
-    @client.tree.command(name="public2", description="Toggle public access with ChatGPT 2")
-    async def public(interaction: discord.Interaction):
-        global isPrivate
+    @client.tree.command(name="public2", description="Toggle public2 access with ChatGPT 2")
+    async def public2(interaction: discord.Interaction):
+        global isPrivate2
         await interaction.response.defer(ephemeral=False)
-        if isPrivate:
-            isPrivate = not isPrivate
-            await interaction.followup.send("> **Info: Next, the response will be sent to the channel directly. If you want to switch back to private mode, use `/private`**")
-            logger.warning("\x1b[31mSwitch to public mode\x1b[0m")
+        if isPrivate2:
+            isPrivate2 = not isPrivate2
+            await interaction.followup.send("> **Info: Next, the response will be sent to the channel directly. If you want to switch back to private2 mode, use `/private2`**")
+            logger.warning("\x1b[31mSwitch to public2 mode\x1b[0m")
         else:
-            await interaction.followup.send("> **Warn: You already on public mode. If you want to switch to private mode, use `/private`**")
-            logger.info("You already on public mode!")
+            await interaction.followup.send("> **Warn: You already on public2 mode. If you want to switch to private2 mode, use `/private2`**")
+            logger.info("You already on public2 mode!")
 
     @client.tree.command(name="replyall2", description="Toggle replyAll access with ChatGPT 2")
-    async def replyall(interaction: discord.Interaction):
-        global isReplyAll
+    async def replyall2(interaction: discord.Interaction):
+        global isReplyAll2
         await interaction.response.defer(ephemeral=False)
-        if isReplyAll:
+        if isReplyAll2:
             await interaction.followup.send("> **Info: The bot will only response to the slash command `/chat` next. If you want to switch back to replyAll mode, use `/replyAll` again.**")
             logger.warning("\x1b[31mSwitch to normal mode\x1b[0m")
         else:
             await interaction.followup.send("> **Info: Next, the bot will response to all message in the server. If you want to switch back to normal mode, use `/replyAll` again.**")
             logger.warning("\x1b[31mSwitch to replyAll mode\x1b[0m")
-        isReplyAll = not isReplyAll
+        isReplyAll2 = not isReplyAll2
             
-    @client.tree.command(name="reset2", description="Complete reset ChatGPT 2 conversation history")
-    async def reset(interaction: discord.Interaction):
-        responses.chatbot.reset()
+    @client.tree.command(name="reset2", description="Complete reset2 ChatGPT 2 conversation history")
+    async def reset2(interaction: discord.Interaction):
+        responses.chatbot.reset2()
         await interaction.response.defer(ephemeral=False)
         await interaction.followup.send("> **Info: I have forgotten everything.**")
         logger.warning(
-            "\x1b[31mChatGPT bot has been successfully reset\x1b[0m")
+            "\x1b[31mChatGPT 2 bot has been successfully reset2\x1b[0m")
         await send_start_prompt(client)
         
-    @client.tree.command(name="help2", description="Show help for the ChatGPT 2 Bot")
-    async def help(interaction: discord.Interaction):
+    @client.tree.command(name="help2", description="Show help2 for the ChatGPT 2 Bot")
+    async def help2(interaction: discord.Interaction):
         await interaction.response.defer(ephemeral=False)
-        await interaction.followup.send(":star:**BASIC COMMANDS** \n\n    - `/chat [message]` Chat with ChatGPT!\n    - `/public` ChatGPT switch to public mode \n    - `/replyall`  ChatGPT switch between replyall mode and default mode\n    - `/reset` Clear ChatGPT conversation history\n\nFor complete documentation, please visit https://github.com/Zero6992/chatGPT-discord-bot")
+        await interaction.followup.send(":star:**BASIC COMMANDS** \n\n    - `/chat2 [message]` Chat with ChatGPT 2!\n    - `/public2` ChatGPT 2 switch to public2 mode \n    - `/replyall`  ChatGPT switch between replyall mode and default mode\n    - `/reset2` Clear ChatGPT conversation history\n\nFor complete documentation, please visit https://github.com/Zero6992/chatGPT-discord-bot")
         logger.info(
-            "\x1b[31mSomeone need help!\x1b[0m")
+            "\x1b[31mSomeone need help2!\x1b[0m")
 
     @client.event
     async def on_message(message):
-        if isReplyAll:
+        if isReplyAll2:
             if message.author == client.user:
                 return
             username = str(message.author)
