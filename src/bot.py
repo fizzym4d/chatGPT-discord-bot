@@ -127,7 +127,7 @@ def run_discord_bot():
         await client.tree.sync()
         logger.info(f'{client.user} is now running!')
 
-    @client.tree.command(name="chat", description="Have a chat with ChatGPT")
+    @client.tree.command(name="chat2", description="Have a chat with ChatGPT 2")
 
     async def chat(interaction: discord.Interaction, *, message: str):
         global isReplyAll
@@ -145,7 +145,7 @@ def run_discord_bot():
             f"\x1b[31m{username}\x1b[0m : '{user_message}' ({channel})")
         await send_message(interaction, user_message)
 
-    @client.tree.command(name="private", description="Toggle private access")
+    @client.tree.command(name="private2", description="Toggle private access with ChatGPT 2")
     async def private(interaction: discord.Interaction):
         global isPrivate
         await interaction.response.defer(ephemeral=False)
@@ -157,7 +157,7 @@ def run_discord_bot():
             logger.info("You already on private mode!")
             await interaction.followup.send("> **Warn: You already on private mode. If you want to switch to public mode, use `/public`**")
 
-    @client.tree.command(name="public", description="Toggle public access")
+    @client.tree.command(name="public2", description="Toggle public access with ChatGPT 2")
     async def public(interaction: discord.Interaction):
         global isPrivate
         await interaction.response.defer(ephemeral=False)
@@ -169,7 +169,7 @@ def run_discord_bot():
             await interaction.followup.send("> **Warn: You already on public mode. If you want to switch to private mode, use `/private`**")
             logger.info("You already on public mode!")
 
-    @client.tree.command(name="replyall", description="Toggle replyAll access")
+    @client.tree.command(name="replyall2", description="Toggle replyAll access with ChatGPT 2")
     async def replyall(interaction: discord.Interaction):
         global isReplyAll
         await interaction.response.defer(ephemeral=False)
@@ -181,7 +181,7 @@ def run_discord_bot():
             logger.warning("\x1b[31mSwitch to replyAll mode\x1b[0m")
         isReplyAll = not isReplyAll
             
-    @client.tree.command(name="reset", description="Complete reset ChatGPT conversation history")
+    @client.tree.command(name="reset2", description="Complete reset ChatGPT 2 conversation history")
     async def reset(interaction: discord.Interaction):
         responses.chatbot.reset()
         await interaction.response.defer(ephemeral=False)
@@ -190,7 +190,7 @@ def run_discord_bot():
             "\x1b[31mChatGPT bot has been successfully reset\x1b[0m")
         await send_start_prompt(client)
         
-    @client.tree.command(name="help", description="Show help for the bot")
+    @client.tree.command(name="help2", description="Show help for the ChatGPT 2 Bot")
     async def help(interaction: discord.Interaction):
         await interaction.response.defer(ephemeral=False)
         await interaction.followup.send(":star:**BASIC COMMANDS** \n\n    - `/chat [message]` Chat with ChatGPT!\n    - `/public` ChatGPT switch to public mode \n    - `/replyall`  ChatGPT switch between replyall mode and default mode\n    - `/reset` Clear ChatGPT conversation history\n\nFor complete documentation, please visit https://github.com/Zero6992/chatGPT-discord-bot")
